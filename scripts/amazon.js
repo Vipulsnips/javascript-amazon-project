@@ -1,4 +1,4 @@
-import {cart} from '../data/cart.js';
+import {cart ,addtocart} from '../data/cart.js';
 import { products } from '../data/products.js';
 let productshtml=''
 products.forEach((product)=>{
@@ -51,39 +51,30 @@ products.forEach((product)=>{
       data-product-id="${product.id}">
         Add to Cart
       </button>
-    </div>
-  `;
-});
+      </div>
+      `;
+    });
 document.querySelector('.js-products-grid').innerHTML=productshtml;
+function updateCartQuantity(){
+  let cartQuantity=0;
+  cart.forEach((item)=>{
+    cartQuantity+=item.quantity;
+  });
+  document.querySelector('.js-cart-quantity')
+    .innerHTML=cartQuantity;
+}
+function addedBtnDisplay(productId){
+    document.querySelector(`.js-added-to-cart-${productId}`).classList.add("added-to-cart-clicked")
+  setTimeout(()=>{
+    document.querySelector(`.js-added-to-cart-${productId}`).classList.remove("added-to-cart-clicked")
+  },2000);
+}
 document.querySelectorAll('.js-add-btn')
   .forEach((button)=>{
     button.addEventListener('click',()=>{
       const productId=(button.dataset.productId);
-      let matchingItem;
-      const  quantity= Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
-      cart.forEach((obj)=>{
-        if(obj.productId === productId){
-          matchingItem=obj;
-        }
-      })
-      if(matchingItem){
-        matchingItem.quantity+=quantity;
-      }
-      else{
-        cart.push({
-          productId:productId,
-          quantity:quantity
-        })
-      }
-      let cartQuantity=0;
-      cart.forEach((item)=>{
-        cartQuantity+=item.quantity;
-      });
-      document.querySelector('.js-cart-quantity')
-        .innerHTML=cartQuantity;
-      document.querySelector(`.js-added-to-cart-${productId}`).classList.add("added-to-cart-clicked")
-      setTimeout(()=>{
-        document.querySelector(`.js-added-to-cart-${productId}`).classList.remove("added-to-cart-clicked")
-      },2000);
+      addtocart(productId);
+      updateCartQuantity();
+      addedBtnDisplay(productId);
     })
   });
