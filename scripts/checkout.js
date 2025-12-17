@@ -100,5 +100,15 @@ document.querySelectorAll('.js-delete-link')
       removeFromCart(productId);
       const container=document.querySelector(`.js-cart-item-container-${productId}`);
       container.remove();
+      updateCartQuantity();
     })
   })
+function updateCartQuantity(){
+  let cartQuantity=0;
+  cart.forEach((item)=>{
+    cartQuantity+=item.quantity;
+  });
+    document.querySelector('.js-quantity-checkout')
+      .innerHTML=cartQuantity;
+}
+updateCartQuantity();
