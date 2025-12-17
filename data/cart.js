@@ -48,3 +48,14 @@ export function calculateCartQuantity(){
   });
   return cartQuantity;
 }
+
+export  function updateDeliveryOption(productId,deliveryOptionsId){
+  let matchingItem;
+  cart.forEach((obj)=>{
+    if(obj.productId === productId){
+      matchingItem=obj;
+    }
+  });
+  matchingItem.deliveryOptionsId=deliveryOptionsId;
+  saveToStorage(); 
+}
