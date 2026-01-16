@@ -60,7 +60,7 @@ async function loadPage() {
         </div>
   
         <div class="product-actions">
-          <a href="tracking.html">
+          <a href="tracking.html?orderId=${order.id}&productId=${product.id}">
             <button class="track-package-button button-secondary">
               Track package
             </button>
@@ -71,10 +71,11 @@ async function loadPage() {
   
     return text;
   }
-  const quantity=calculateCartQuantity();
-  document.querySelector('.js-cart-quantity')
-    .innerHTML=quantity;
-  
+  const q=calculateCartQuantity() || 0;
+  const cartQuantityEl = document.querySelector('.js-cart-quantity');
+  if (cartQuantityEl) {
+    cartQuantityEl.innerHTML = q;
+  }
   document.querySelector('.js-orders-grid').innerHTML = HTML;
 
   document.querySelectorAll('.js-buy-again')
@@ -97,4 +98,12 @@ async function loadPage() {
 
 loadPage();
 
-
+export function getOrder(orderId){
+  let matchingOrder;
+  orders.forEach((order)=>{
+    if(order.id ===orderId ){
+      matchingOrder=order;
+    }
+  });
+  return matchingOrder;
+}
